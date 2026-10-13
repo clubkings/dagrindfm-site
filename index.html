@@ -284,15 +284,15 @@ function startCamera(){
   if(cameraLive)return;
   setCameraMode(true);
   liveCamera.muted=true;
-  if(liveCamera.canPlayType("application/vnd.apple.mpegurl")){
-    liveCamera.src=CONFIG.liveVideoUrl;
-    liveCamera.play().catch(()=>{});
-  }else if(window.Hls&&Hls.isSupported()){
+  if(window.Hls&&Hls.isSupported()){
     cameraHls=new Hls({enableWorker:true,liveSyncDurationCount:3,liveMaxLatencyDurationCount:6});
     cameraHls.loadSource(CONFIG.liveVideoUrl);
     cameraHls.attachMedia(liveCamera);
     cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>liveCamera.play().catch(()=>{}));
     cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal&&data.type===Hls.ErrorTypes.NETWORK_ERROR)stopCamera();});
+  }else if(liveCamera.canPlayType("application/vnd.apple.mpegurl")){
+    liveCamera.src=CONFIG.liveVideoUrl;
+    liveCamera.play().catch(()=>{});
   }else{
     stopCamera();
   }
