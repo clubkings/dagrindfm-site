@@ -218,7 +218,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
 const CONFIG = {
   radioStreamUrl: "https://custom-azura1.asurahosting.com/listen/dagrindfm_/radio.mp3",
   liveVideoUrl: "https://desktop-pi4ia6h.tail680f8c.ts.net/dagrindfm/index.m3u8",
-  liveCheckMs: 12000
+  liveCheckMs: 2500
 };
 
 const tabs = document.querySelectorAll(".tab");
@@ -248,6 +248,12 @@ const cameraBadge=document.getElementById("cameraBadge");
 let cameraHls=null;
 let cameraLive=false;
 liveAudio.src=CONFIG.radioStreamUrl;
+liveCamera.defaultMuted=true;
+liveCamera.muted=true;
+liveCamera.volume=0;
+liveCamera.addEventListener("volumechange",()=>{
+  if(!liveCamera.muted||liveCamera.volume!==0){liveCamera.muted=true;liveCamera.volume=0;}
+});
 function updateStudioListen(isPlaying){
   studioListen.classList.toggle("playing",isPlaying);
   studioListen.setAttribute("aria-label",isPlaying?"Pause live studio audio":"Play live studio audio");
@@ -293,12 +299,31 @@ function stopCamera(){
 function startCamera(){
   if(cameraLive)return;
   setCameraMode(true);
+  liveCamera.defaultMuted=true;
   liveCamera.muted=true;
+  liveCamera.volume=0;
   if(window.Hls&&Hls.isSupported()){
-    cameraHls=new Hls({enableWorker:true,liveSyncDurationCount:3,liveMaxLatencyDurationCount:6});
+    cameraHls=new Hls({
+      enableWorker:true,
+      lowLatencyMode:true,
+      liveSyncMode:"edge",
+      liveSyncDurationCount:1,
+      liveMaxLatencyDurationCount:3,
+      maxLiveSyncPlaybackRate:1.5,
+      maxBufferLength:4,
+      backBufferLength:0
+    });
     cameraHls.loadSource(CONFIG.liveVideoUrl);
     cameraHls.attachMedia(liveCamera);
-    cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>liveCamera.play().catch(()=>{}));
+    cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{
+      const edge=cameraHls.liveSyncPosition;
+      if(Number.isFinite(edge))liveCamera.currentTime=edge;
+      liveCamera.play().catch(()=>{});
+    });
+    cameraHls.on(Hls.Events.LEVEL_UPDATED,()=>{
+      const edge=cameraHls.liveSyncPosition;
+      if(Number.isFinite(edge)&&edge-liveCamera.currentTime>3)liveCamera.currentTime=edge;
+    });
     cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal&&data.type===Hls.ErrorTypes.NETWORK_ERROR)stopCamera();});
   }else if(liveCamera.canPlayType("application/vnd.apple.mpegurl")){
     liveCamera.src=CONFIG.liveVideoUrl;
