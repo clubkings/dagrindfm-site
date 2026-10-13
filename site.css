@@ -67,6 +67,7 @@ main{max-width:1380px;margin:auto;padding:34px 24px 92px}
 .site-footer p{font-size:13px;letter-spacing:0}
 .schedule-card{display:flex;align-items:center;justify-content:space-between;gap:26px;margin-top:26px;padding:27px 30px;border:1px solid #443a2b;border-radius:22px;background:linear-gradient(110deg,#17130d,#0d0d0b)}
 .schedule-card h2{font-family:'Barlow Condensed',Impact,sans-serif;font-size:42px;line-height:1;margin:9px 0 6px}.schedule-card p{color:#d4c9b6;font-size:16px}.schedule-genre{color:var(--orange);font-size:12px;font-weight:900;letter-spacing:.14em;text-align:right}
+.schedule-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.schedule-list article{border:1px solid #393124;border-radius:14px;padding:18px;background:#11110f}.schedule-list span{display:block;color:var(--orange);font-size:10px;font-weight:900;letter-spacing:.16em}.schedule-list b{display:block;font-family:'Barlow Condensed',Impact,sans-serif;font-size:28px;margin:10px 0 4px}.schedule-list small{color:#c9c0b2}
 .sister-stations{display:flex;flex-wrap:wrap;align-items:center;gap:9px 18px}.sister-stations span{color:var(--orange);font-size:10px;font-weight:900;letter-spacing:.15em}.sister-stations b{font-family:'Barlow Condensed',Impact,sans-serif;font-size:20px;color:#eee7da;white-space:nowrap}
 @media(max-width:860px){
  header{padding:10px 18px}.station-logo{width:54px;height:54px}.brand-copy strong{font-size:22px}.logo .tag{font-size:8px;white-space:normal}
@@ -80,6 +81,7 @@ main{max-width:1380px;margin:auto;padding:34px 24px 92px}
  .signal-grid{grid-template-columns:1fr 1fr}
  .partner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .schedule-card{padding:22px;align-items:flex-start;flex-direction:column}.schedule-genre{text-align:left}
+ .schedule-list{grid-template-columns:1fr 1fr}
 }
 @media(max-width:560px){
  header{padding:8px 14px;gap:10px}.station-logo{width:46px;height:46px}.brand-copy strong{font-size:18px}.logo .tag{font-size:7px;letter-spacing:.05em}
@@ -104,5 +106,6 @@ main{max-width:1380px;margin:auto;padding:34px 24px 92px}
  .partner-card img,.partner-card img.portrait,.partner-card img.sponsor-flyer{height:auto;max-height:460px;width:100%;object-fit:contain}
  .site-footer{padding:26px 14px 36px;display:block}.site-footer>div+div{margin-top:20px}
  .schedule-card{margin-top:18px;padding:20px}.schedule-card h2{font-size:34px}.schedule-card p{font-size:14px}.schedule-genre{font-size:10px;line-height:1.6}
+ .schedule-list{grid-template-columns:1fr}.schedule-list article{padding:16px}.schedule-list b{font-size:25px}
 }
 @media(prefers-reduced-motion:reduce){.panel,.station-visual:before,.station-visual:after,.visual-bars i{animation:none!important}}
