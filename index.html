@@ -78,11 +78,12 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
       </div>
       <button id="radioPlay" class="play" aria-label="Play live radio">▶</button>
     </div>
-    <div class="now">
-      <div class="eyebrow">NOW PLAYING</div>
-      <div style="font-weight:900;margin-top:5px">DAGRINDFM LIVE</div>
-      <div class="status" style="margin-top:4px">Hip-Hop • R&amp;B • Throwbacks</div>
-    </div>
+    <button id="studioListen" class="now studio-listen" type="button" aria-label="Play live studio audio">
+      <span class="eyebrow">LIVE FROM THE STUDIO</span>
+      <strong id="studioListenTitle">TAP TO HEAR DAGRINDFM LIVE</strong>
+      <span id="studioListenCopy">Hear the music playing on air right now.</span>
+      <span class="studio-listen-action"><i>▶</i><b>LISTEN LIVE</b></span>
+    </button>
     <div class="station-visual" aria-label="DaGrindFM live station visual">
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
       <video id="liveCamera" class="live-camera" playsinline muted autoplay aria-label="DaGrindFM live camera"></video>
@@ -233,6 +234,9 @@ tabs.forEach(btn=>{
 
 let playing=false;
 const radioBtn=document.getElementById("radioPlay");
+const studioListen=document.getElementById("studioListen");
+const studioListenTitle=document.getElementById("studioListenTitle");
+const studioListenCopy=document.getElementById("studioListenCopy");
 const liveAudio=document.getElementById("liveAudio");
 const radioStatus=document.getElementById("radioStatus");
 const visualStatus=document.getElementById("visualStatus");
@@ -243,9 +247,15 @@ const cameraBadge=document.getElementById("cameraBadge");
 let cameraHls=null;
 let cameraLive=false;
 liveAudio.src=CONFIG.radioStreamUrl;
-liveAudio.addEventListener("playing",()=>{radioBtn.textContent="❚❚";radioBtn.setAttribute("aria-label","Pause live radio");radioStatus.textContent="DaGrindFM is playing live.";});
-liveAudio.addEventListener("pause",()=>{radioBtn.setAttribute("aria-label","Play live radio");});
-liveAudio.addEventListener("error",()=>{radioBtn.textContent="▶";radioStatus.textContent="The stream is unavailable right now. Please try again in a moment.";});
+function updateStudioListen(isPlaying){
+  studioListen.classList.toggle("playing",isPlaying);
+  studioListen.setAttribute("aria-label",isPlaying?"Pause live studio audio":"Play live studio audio");
+  studioListenTitle.textContent=isPlaying?"YOU'RE HEARING THE STUDIO LIVE":"TAP TO HEAR DAGRINDFM LIVE";
+  studioListenCopy.textContent=isPlaying?"Live studio audio is playing through your device.":"Hear the music playing on air right now.";
+}
+liveAudio.addEventListener("playing",()=>{radioBtn.textContent="❚❚";radioBtn.setAttribute("aria-label","Pause live radio");radioStatus.textContent="DaGrindFM is playing live.";updateStudioListen(true);});
+liveAudio.addEventListener("pause",()=>{radioBtn.setAttribute("aria-label","Play live radio");updateStudioListen(false);});
+liveAudio.addEventListener("error",()=>{radioBtn.textContent="▶";radioStatus.textContent="The stream is unavailable right now. Please try again in a moment.";updateStudioListen(false);});
 radioBtn.addEventListener("click",async()=>{
   if(CONFIG.radioStreamUrl){
     if(liveAudio.paused){
@@ -261,6 +271,7 @@ radioBtn.addEventListener("click",async()=>{
     bars.forEach((b,i)=>b.style.height=(playing?(35+((i*17)%62)):(22+((i*13)%45)))+"%");
   }
 });
+studioListen.addEventListener("click",()=>radioBtn.click());
 
 function setCameraMode(active){
   cameraLive=active;
