@@ -247,90 +247,74 @@ const liveCamera=document.getElementById("liveCamera");
 const cameraBadge=document.getElementById("cameraBadge");
 let cameraHls=null;
 let cameraLive=false;
+
 liveAudio.src=CONFIG.radioStreamUrl;
+let listenWanted=false, showReady=false, switchingAudio=false;
 liveCamera.defaultMuted=true;
 liveCamera.muted=true;
-liveCamera.volume=0;
-liveCamera.addEventListener("volumechange",()=>{
-  if(!liveCamera.muted||liveCamera.volume!==0){liveCamera.muted=true;liveCamera.volume=0;}
-});
+liveCamera.volume=1;
 function updateStudioListen(isPlaying){
   studioListen.classList.toggle("playing",isPlaying);
+  radioBtn.textContent=isPlaying?"❚❚":"▶";
+  radioBtn.setAttribute("aria-label",isPlaying?"Pause live audio":"Play live audio");
   studioListen.setAttribute("aria-label",isPlaying?"Pause live studio audio":"Play live studio audio");
-  studioListenTitle.textContent=isPlaying?"YOU'RE HEARING THE STUDIO LIVE":"TAP TO HEAR DAGRINDFM LIVE";
-  studioListenCopy.textContent=isPlaying?"Live studio audio is playing through your device.":"Hear the music playing on air right now.";
+  studioListenTitle.textContent=isPlaying?"YOU'RE HEARING DAGRINDFM LIVE":"TAP TO HEAR DAGRINDFM LIVE";
+  studioListenCopy.textContent=isPlaying?"Live music and shows.":"Tap to listen.";
+  radioStatus.textContent=isPlaying?"DaGrindFM is playing live.":"Tap play to listen live.";
 }
-liveAudio.addEventListener("playing",()=>{radioBtn.textContent="❚❚";radioBtn.setAttribute("aria-label","Pause live radio");radioStatus.textContent="DaGrindFM is playing live.";updateStudioListen(true);});
-liveAudio.addEventListener("pause",()=>{radioBtn.setAttribute("aria-label","Play live radio");updateStudioListen(false);});
-liveAudio.addEventListener("error",()=>{radioBtn.textContent="▶";radioStatus.textContent="The stream is unavailable right now. Please try again in a moment.";updateStudioListen(false);});
-radioBtn.addEventListener("click",async()=>{
-  if(CONFIG.radioStreamUrl){
-    if(liveAudio.paused){
-      try{await liveAudio.play();radioBtn.textContent="❚❚";radioStatus.textContent="DaGrindFM is playing live."}
-      catch(e){radioStatus.textContent="The stream could not start. Check the stream URL."}
-    }else{
-      liveAudio.pause();radioBtn.textContent="▶";radioStatus.textContent="Tap play to listen live.";
-    }
+async function routeAudio(){
+  switchingAudio=true;
+  // Only one audible source: the synchronized show, or the station when offline.
+  if(cameraLive&&showReady){
+    liveAudio.pause();
+    liveCamera.muted=!listenWanted;
+    try{await liveCamera.play();updateStudioListen(listenWanted);}
+    catch(_){liveCamera.muted=true;updateStudioListen(false);}
   }else{
-    playing=!playing;
-    radioBtn.textContent=playing?"❚❚":"▶";
-    radioStatus.textContent=playing?"Interactive demo playing. Add your real stream URL for live audio.":"Preview paused.";
-    bars.forEach((b,i)=>b.style.height=(playing?(35+((i*17)%62)):(22+((i*13)%45)))+"%");
+    liveCamera.muted=true;
+    if(listenWanted){try{await liveAudio.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}}
+    else{liveAudio.pause();updateStudioListen(false);}
   }
+  switchingAudio=false;
+}
+liveAudio.addEventListener("playing",()=>{
+  if(cameraLive&&showReady){liveAudio.pause();return;}
+  updateStudioListen(listenWanted);
 });
+liveAudio.addEventListener("error",()=>{if(!showReady)updateStudioListen(false);});
+radioBtn.addEventListener("click",()=>{listenWanted=!listenWanted;void routeAudio();});
 studioListen.addEventListener("click",()=>radioBtn.click());
-
+liveCamera.addEventListener("playing",()=>{
+  if(!cameraLive)return;
+  if(!showReady){showReady=true;void routeAudio();}
+});
 function setCameraMode(active){
   cameraLive=active;
   stationVisual.classList.toggle("camera-live",active);
-  cameraBadge.textContent=active?"LIVE CAMERA":"CAMERA READY";
-  visualStatus.textContent=active?"LIVE VIDEO • LISTEN WITH THE RADIO PLAYER":"STUDIO CAMERA • LIVE WHEN ON AIR";
+  cameraBadge.textContent=active?"LIVE SHOW":"CAMERA READY";
+  visualStatus.textContent=active?"LIVE SHOW • TAP PLAY TO LISTEN":"STUDIO CAMERA • LIVE WHEN ON AIR";
 }
-
 function stopCamera(){
-  if(cameraHls){cameraHls.destroy();cameraHls=null;}
-  liveCamera.pause();
-  liveCamera.removeAttribute("src");
-  liveCamera.load();
-  liveCamera.muted=true;
+  showReady=false;
   setCameraMode(false);
+  liveCamera.muted=true;
+  if(cameraHls){cameraHls.destroy();cameraHls=null;}
+  liveCamera.pause();liveCamera.removeAttribute("src");liveCamera.load();
+  // Reconnect at the current station position rather than an old buffered song.
+  liveAudio.load();void routeAudio();
 }
-
 function startCamera(){
   if(cameraLive)return;
-  setCameraMode(true);
-  liveCamera.defaultMuted=true;
-  liveCamera.muted=true;
-  liveCamera.volume=0;
+  showReady=false;setCameraMode(true);liveCamera.muted=true;
   if(window.Hls&&Hls.isSupported()){
-    cameraHls=new Hls({
-      enableWorker:true,
-      lowLatencyMode:true,
-      liveSyncMode:"edge",
-      liveSyncDurationCount:1,
-      liveMaxLatencyDurationCount:3,
-      maxLiveSyncPlaybackRate:1.5,
-      maxBufferLength:4,
-      backBufferLength:0
-    });
-    cameraHls.loadSource(CONFIG.liveVideoUrl);
-    cameraHls.attachMedia(liveCamera);
-    cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{
-      const edge=cameraHls.liveSyncPosition;
-      if(Number.isFinite(edge))liveCamera.currentTime=edge;
-      liveCamera.play().catch(()=>{});
-    });
-    cameraHls.on(Hls.Events.LEVEL_UPDATED,()=>{
-      const edge=cameraHls.liveSyncPosition;
-      if(Number.isFinite(edge)&&edge-liveCamera.currentTime>3)liveCamera.currentTime=edge;
-    });
-    cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal&&data.type===Hls.ErrorTypes.NETWORK_ERROR)stopCamera();});
+    cameraHls=new Hls({enableWorker:true,lowLatencyMode:true,
+      maxLiveSyncPlaybackRate:1.05,maxBufferLength:6,backBufferLength:0});
+    cameraHls.loadSource(CONFIG.liveVideoUrl);cameraHls.attachMedia(liveCamera);
+    cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{liveCamera.play().catch(()=>{});});
+    cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal)stopCamera();});
   }else if(liveCamera.canPlayType("application/vnd.apple.mpegurl")){
-    liveCamera.src=CONFIG.liveVideoUrl;
-    liveCamera.play().catch(()=>{});
-  }else{
-    stopCamera();
-  }
+    liveCamera.src=CONFIG.liveVideoUrl;liveCamera.play().catch(()=>{});
+  }else stopCamera();
 }
 
 async function checkCamera(){
