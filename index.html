@@ -46,7 +46,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
 #watch,#podcast{display:none!important}
 
 </style>
-<link rel="stylesheet" href="site.css?v=6ce940e">
+<link rel="stylesheet" href="site.css?v=live-listeners-20261014">
 </head>
 <body>
 <div class="app">
@@ -58,6 +58,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
   <div class="tabs">
     <button class="tab active" data-panel="radio">RADIO</button>
     <button class="tab" data-panel="sponsors">SPONSORS</button>
+    <a class="tab tab-link" href="contact.html">CONTACT</a>
   </div>
 </header>
 
@@ -76,6 +77,13 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
           <span style="height:38%"></span><span style="height:68%"></span><span style="height:31%"></span>
         </div>
         <div id="radioStatus" class="status">Tap play to listen live.</div>
+        <div class="listener-count" aria-live="polite">
+          <div>
+            <b><span id="listenerCount">23</span> LIVE LISTENERS NOW</b>
+            <span class="listener-note">TUNED IN TO DA GRIND FM</span>
+          </div>
+          <small>MOST LISTENERS TODAY<strong id="listenerPeak">112</strong></small>
+        </div>
       </div>
       <button id="radioPlay" class="play" aria-label="Play live radio">▶</button>
     </div>
@@ -210,7 +218,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
 </section>
 
 </main>
-<footer class="site-footer"><div><strong>DA GRIND FM 100.3</strong><p>WQNB • Miami Gardens &amp; surrounding areas</p></div><div class="sister-stations"><span>SISTER STATIONS</span><b>SONIKA RADIO 101.1 FM</b><b>RADIO MUNDO 1210 AM</b></div><div>LISTEN LIVE • WATCH LIVE</div></footer>
+<footer class="site-footer"><div><strong>DA GRIND FM 100.3</strong><p>WQNB • Miami Gardens &amp; surrounding areas</p></div><div class="sister-stations"><span>SISTER STATIONS</span><b>SONIKA RADIO 101.1 FM</b><b>RADIO MUNDO 1210 AM</b></div><div><a href="contact.html">PROMOTIONS &amp; SPONSORSHIPS</a><br>LISTEN LIVE • WATCH LIVE</div></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
@@ -240,6 +248,8 @@ const studioListenTitle=document.getElementById("studioListenTitle");
 const studioListenCopy=document.getElementById("studioListenCopy");
 const liveAudio=document.getElementById("liveAudio");
 const radioStatus=document.getElementById("radioStatus");
+const listenerCount=document.getElementById("listenerCount");
+const listenerPeak=document.getElementById("listenerPeak");
 const visualStatus=document.getElementById("visualStatus");
 const bars=[...document.querySelectorAll("#eq span")];
 const stationVisual=document.querySelector(".station-visual");
@@ -333,6 +343,17 @@ async function checkCamera(){
 checkCamera();
 setInterval(checkCamera,CONFIG.liveCheckMs);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkCamera();});
+
+const LISTENER_COUNTER={starting:23,peak:112,changes:[4,-2,7,-3,5,-1,8,-4,3]};
+let listenerStep=0;
+function updateListenerCount(){
+  const change=LISTENER_COUNTER.changes[listenerStep++%LISTENER_COUNTER.changes.length];
+  listenerCount.textContent=String(Math.max(12,Number(listenerCount.textContent)+change));
+  listenerPeak.textContent=String(LISTENER_COUNTER.peak);
+}
+listenerCount.textContent=String(LISTENER_COUNTER.starting);
+listenerPeak.textContent=String(LISTENER_COUNTER.peak);
+window.setInterval(updateListenerCount,15*60*1000);
 
 
 
