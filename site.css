@@ -126,3 +126,6 @@ main{max-width:1380px;margin:auto;padding:34px 24px 92px}
  .schedule-list{grid-template-columns:1fr}.schedule-list article{padding:16px}.schedule-list b{font-size:25px}
 }
 @media(prefers-reduced-motion:reduce){.panel,.station-visual:before,.station-visual:after,.visual-bars i{animation:none!important}}
+
+/* Keep the broadcast lower third unobstructed on all screen sizes. */
+.station-visual.camera-live .visual-status{display:none}
