@@ -273,9 +273,6 @@ let listenWanted=false, showReady=false;
 liveCamera.defaultMuted=true;
 liveCamera.muted=true;
 liveCamera.volume=0;
-liveCamera.addEventListener("volumechange",()=>{
-  if(!liveCamera.muted||liveCamera.volume!==0){liveCamera.muted=true;liveCamera.volume=0;}
-});
 function updateStudioListen(isPlaying){
   studioListen.classList.toggle("playing",isPlaying);
   radioBtn.textContent=isPlaying?"❚❚":"▶";
@@ -286,7 +283,19 @@ function updateStudioListen(isPlaying){
   radioStatus.textContent=isPlaying?"DaGrindFM is playing live.":"Tap play to listen live.";
 }
 async function routeAudio(){
-  // The studio camera is always silent. The station player is the only audio source.
+  if(cameraLive){
+    liveAudio.pause();
+    if(listenWanted){
+      liveCamera.muted=false;
+      liveCamera.volume=1;
+      try{await liveCamera.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}
+    }else{
+      liveCamera.muted=true;
+      liveCamera.volume=0;
+      updateStudioListen(false);
+    }
+    return;
+  }
   liveCamera.muted=true;
   liveCamera.volume=0;
   if(listenWanted){try{await liveAudio.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}}
@@ -306,7 +315,7 @@ function setCameraMode(active){
   cameraLive=active;
   stationVisual.classList.toggle("camera-live",active);
   cameraBadge.textContent=active?"LIVE SHOW":"CAMERA READY";
-  visualStatus.textContent=active?"LIVE SHOW • TAP PLAY TO LISTEN":"STUDIO CAMERA • LIVE WHEN ON AIR";
+  visualStatus.textContent=active?"LIVE SHOW • TAP PLAY TO WATCH + LISTEN":"STUDIO CAMERA • LIVE WHEN ON AIR";
 }
 function stopCamera(){
   showReady=false;
@@ -315,6 +324,7 @@ function stopCamera(){
   liveCamera.volume=0;
   if(cameraHls){cameraHls.destroy();cameraHls=null;}
   liveCamera.pause();liveCamera.removeAttribute("src");liveCamera.load();
+  void routeAudio();
 }
 function syncCameraToLive(){
   if(!cameraLive||liveCamera.paused||!liveCamera.seekable.length)return;
