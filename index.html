@@ -316,12 +316,20 @@ function stopCamera(){
   if(cameraHls){cameraHls.destroy();cameraHls=null;}
   liveCamera.pause();liveCamera.removeAttribute("src");liveCamera.load();
 }
+function syncCameraToLive(){
+  if(!cameraLive||liveCamera.paused||!liveCamera.seekable.length)return;
+  const edge=liveCamera.seekable.end(liveCamera.seekable.length-1);
+  if(!Number.isFinite(edge)||edge-liveCamera.currentTime<8)return;
+  const target=cameraHls&&Number.isFinite(cameraHls.liveSyncPosition)
+    ?cameraHls.liveSyncPosition:edge-2;
+  if(Number.isFinite(target))liveCamera.currentTime=Math.max(0,Math.min(target,edge-.25));
+}
 function startCamera(){
   if(cameraLive)return;
   showReady=false;setCameraMode(true);liveCamera.muted=true;liveCamera.volume=0;
   if(window.Hls&&Hls.isSupported()){
     cameraHls=new Hls({enableWorker:true,lowLatencyMode:true,
-      maxLiveSyncPlaybackRate:1.05,maxBufferLength:6,backBufferLength:0});
+      liveSyncDurationCount:2,liveMaxLatencyDurationCount:6,maxLiveSyncPlaybackRate:1.25,maxBufferLength:6,backBufferLength:0});
     cameraHls.loadSource(CONFIG.liveVideoUrl);cameraHls.attachMedia(liveCamera);
     cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{liveCamera.play().catch(()=>{});});
     cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal)stopCamera();});
@@ -345,7 +353,8 @@ async function checkCamera(){
 
 checkCamera();
 setInterval(checkCamera,CONFIG.liveCheckMs);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkCamera();});
+setInterval(syncCameraToLive,2500);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){checkCamera();syncCameraToLive();}});
 
 // Day-part listener movement: each 10-minute update eases toward the next hour
 // instead of restarting or jumping to a fixed number on every page load.
