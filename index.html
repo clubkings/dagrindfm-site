@@ -23,7 +23,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
 .radio-row{display:flex;gap:18px;align-items:center;margin-top:19px}.eq{height:60px;flex:1;display:flex;align-items:flex-end;gap:4px}.eq span{display:block;width:5px;background:var(--orange);border-radius:5px;transition:.2s height}
 .play{height:84px;width:84px;border-radius:50%;border:2px solid var(--orange);background:rgba(255,106,24,.08);color:var(--orange);font-size:32px}
 .now{border:1px solid #242424;background:#060606;border-radius:14px;padding:12px;margin-top:16px}.eyebrow{font-size:9px;font-weight:900;letter-spacing:.18em;color:var(--orange)}
-.studio-listen{width:100%;display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center;text-align:left;color:var(--text);cursor:pointer}.studio-listen strong{font-size:17px;line-height:1.05}.studio-listen>span:not(.eyebrow):not(.studio-listen-action){color:#b7b0a4;font-size:12px;line-height:1.35}.studio-listen-action{grid-column:2;grid-row:1 / span 3;display:grid;place-items:center;gap:5px;min-width:76px;min-height:64px;border-left:1px solid #47391e;color:var(--orange)}.studio-listen-action i{display:grid;place-items:center;width:30px;height:30px;border:1px solid currentColor;border-radius:50%;font-style:normal;font-size:12px;padding-left:2px}.studio-listen-action b{font-size:8px;letter-spacing:.1em}.studio-listen:hover,.studio-listen:focus-visible{border-color:var(--orange);background:#18130b;outline:none}.studio-listen.playing{border-color:#4bbb77}.studio-listen.playing .studio-listen-action{color:#70dd9b;border-left-color:#2f6644}.studio-listen.playing .studio-listen-action i{font-size:0}.studio-listen.playing .studio-listen-action i:after{content:'❚❚';font-size:12px}
+.studio-listen{width:100%;display:grid;grid-template-columns:1fr;gap:5px 12px;align-items:center;text-align:left;color:var(--text)}.studio-listen strong{font-size:17px;line-height:1.05}.studio-listen>span:not(.eyebrow):not(.studio-listen-action){color:#b7b0a4;font-size:12px;line-height:1.35}.studio-listen.playing{border-color:#4bbb77}
 .section-title{font-size:24px;font-weight:900;margin:6px 0 13px}.video{aspect-ratio:16/9;border-radius:18px;background:linear-gradient(145deg,#040404,#321055,#050505);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
 .station-visual{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:16/9;margin-top:18px;border:1px solid rgba(245,160,0,.45);border-radius:20px;background:radial-gradient(circle at 50% 38%,rgba(245,160,0,.24),transparent 28%),linear-gradient(135deg,#080808,#251406 50%,#050505);display:flex;align-items:center;justify-content:center}.station-visual:before,.station-visual:after{content:"";position:absolute;border-radius:50%;pointer-events:none}.station-visual:before{width:68%;aspect-ratio:1;border:1px solid rgba(245,160,0,.25);box-shadow:0 0 0 22px rgba(245,160,0,.05),0 0 0 48px rgba(245,160,0,.025);animation:spin 18s linear infinite}.station-visual:after{inset:0;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.08) 49%,transparent 60%);transform:translateX(-130%);animation:sweep 5s ease-in-out infinite}.visual-brand{position:relative;z-index:1;text-align:center;padding:20px 26px}.visual-logo{width:105px;height:105px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(245,160,0,.65))}.visual-kicker{margin-top:8px;font-size:10px;letter-spacing:.22em;font-weight:900;color:#ffbd4d}.visual-title{font-size:26px;font-weight:900;letter-spacing:.02em;margin-top:6px}.visual-status{position:absolute;z-index:3;left:18px;right:18px;bottom:60px;font-size:11px;color:#d5d5d5}.visual-bars{position:absolute;left:16px;right:16px;bottom:14px;height:40px;display:flex;align-items:flex-end;justify-content:center;gap:5px;opacity:.85}.visual-bars i{width:6px;min-height:7px;border-radius:6px 6px 2px 2px;background:linear-gradient(#ffe1a2,#f5a000);animation:bounce 1s ease-in-out infinite alternate}.visual-bars i:nth-child(2n){animation-delay:.18s}.visual-bars i:nth-child(3n){animation-delay:.42s}.visual-bars i:nth-child(1){height:35%}.visual-bars i:nth-child(2){height:78%}.visual-bars i:nth-child(3){height:52%}.visual-bars i:nth-child(4){height:95%}.visual-bars i:nth-child(5){height:66%}.visual-bars i:nth-child(6){height:44%}.visual-bars i:nth-child(7){height:87%}.visual-bars i:nth-child(8){height:58%}.visual-bars i:nth-child(9){height:100%}.visual-bars i:nth-child(10){height:61%}.visual-bars i:nth-child(11){height:82%}.visual-bars i:nth-child(12){height:40%}.visual-cam-note{position:absolute;z-index:2;right:12px;top:12px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.58);backdrop-filter:blur(8px);border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#fff}@keyframes spin{to{transform:rotate(360deg)}}@keyframes sweep{0%,28%{transform:translateX(-130%)}62%,100%{transform:translateX(130%)}}@keyframes bounce{to{transform:scaleY(.32);transform-origin:bottom}}
 .live-camera{display:none;position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:cover;background:#000}.camera-sound{display:none!important}.station-visual>.visual-status{display:none}.station-visual.camera-live{border-color:#ff3636}.station-visual.camera-live:before,.station-visual.camera-live:after,.station-visual.camera-live .visual-brand,.station-visual.camera-live .visual-bars{display:none}.station-visual.camera-live .live-camera{display:block}.station-visual.camera-live .visual-cam-note{z-index:7;left:12px;right:auto;background:rgba(176,0,0,.9);border-color:#ff5b5b}.station-visual.camera-live .visual-status{display:block;z-index:6;top:auto;bottom:13px;left:13px;right:13px;max-width:none;padding:7px 9px;border-radius:10px;background:rgba(0,0,0,.68);color:#fff;font-size:9px;font-weight:900;letter-spacing:.05em}
@@ -92,14 +92,13 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
         </div>
         <div id="radioStatus" class="status">Tap play to listen live.</div>
       </div>
-      <button id="radioPlay" class="play" aria-label="Play live radio">▶</button>
+      <button id="radioPlay" class="play" aria-label="Play live radio">LISTEN LIVE</button>
     </div>
-    <button id="studioListen" class="now studio-listen" type="button" aria-label="Play live studio audio">
+    <div id="studioListen" class="now studio-listen" aria-live="polite">
       <span class="eyebrow">LIVE FROM THE STUDIO</span>
       <strong id="studioListenTitle">TAP TO HEAR DAGRINDFM LIVE</strong>
       <span id="studioListenCopy">Hear the music playing on air right now.</span>
-      <span class="studio-listen-action"><i>▶</i><b>LISTEN LIVE</b></span>
-    </button>
+    </div>
     <div class="station-visual" aria-label="DaGrindFM live station visual">
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
       <video id="liveCamera" class="live-camera" playsinline muted autoplay aria-label="DaGrindFM live camera"></video>
@@ -275,9 +274,8 @@ liveCamera.muted=true;
 liveCamera.volume=0;
 function updateStudioListen(isPlaying){
   studioListen.classList.toggle("playing",isPlaying);
-  radioBtn.textContent=isPlaying?"❚❚":"▶";
+  radioBtn.textContent=isPlaying?"PAUSE":"LISTEN LIVE";
   radioBtn.setAttribute("aria-label",isPlaying?"Pause live audio":"Play live audio");
-  studioListen.setAttribute("aria-label",isPlaying?"Pause live studio audio":"Play live studio audio");
   studioListenTitle.textContent=isPlaying?"YOU'RE HEARING DAGRINDFM LIVE":"TAP TO HEAR DAGRINDFM LIVE";
   studioListenCopy.textContent=isPlaying?"Live music and shows.":"Tap to listen.";
   radioStatus.textContent=isPlaying?"DaGrindFM is playing live.":"Tap play to listen live.";
@@ -306,7 +304,6 @@ liveAudio.addEventListener("playing",()=>{
 });
 liveAudio.addEventListener("error",()=>updateStudioListen(false));
 radioBtn.addEventListener("click",()=>{listenWanted=!listenWanted;void routeAudio();});
-studioListen.addEventListener("click",()=>radioBtn.click());
 liveCamera.addEventListener("playing",()=>{
   if(!cameraLive)return;
   if(!showReady){showReady=true;void routeAudio();}
