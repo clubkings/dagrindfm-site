@@ -92,7 +92,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
         </div>
         <div id="radioStatus" class="status">Tap play to listen live.</div>
       </div>
-      <button id="radioPlay" class="play" aria-label="Play live radio">LISTEN LIVE</button>
+    <button id="radioPlay" class="play" aria-label="Play live radio">▶</button>
     </div>
     <div id="studioListen" class="now studio-listen" aria-live="polite">
       <span class="eyebrow">LIVE FROM THE STUDIO</span>
@@ -229,7 +229,7 @@ h1,h2,h3,p{margin:0}.station-title{font-size:31px;font-weight:900;margin-top:11p
 </section>
 
 </main>
-<footer class="site-footer"><div><strong>DA GRIND FM 100.3</strong><p>WQNB • Miami Gardens &amp; surrounding areas</p></div><div class="sister-stations"><span>SISTER STATIONS</span><b>SONIKA RADIO 101.1 FM</b><b>UNO NEXT LATINO</b></div><div>LISTEN LIVE • WATCH LIVE</div></footer>
+<footer class="site-footer"><div><strong>DA GRIND FM 100.3</strong><p>WQNB • Miami Gardens &amp; surrounding areas</p></div><div class="sister-stations"><span>SISTER STATIONS</span><b>SONIKA RADIO 101.1 FM</b><a class="unonext-station" href="https://www.unonext.com/radio" target="_blank" rel="noopener noreferrer" aria-label="Listen to UnoNext Latino"><img src="unonext-latino-logo.png" alt="UnoNext Latino logo"><span><strong>UNO NEXT LATINO</strong><small>Live radio • Noticias, deportes y entretenimiento</small></span></a><a class="unonext-instagram" href="https://www.instagram.com/unonextlatino/" target="_blank" rel="noopener noreferrer">IG @UnoNextLatino</a></div><div>LISTEN LIVE • WATCH LIVE</div></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
@@ -274,7 +274,7 @@ liveCamera.muted=true;
 liveCamera.volume=0;
 function updateStudioListen(isPlaying){
   studioListen.classList.toggle("playing",isPlaying);
-  radioBtn.textContent=isPlaying?"PAUSE":"LISTEN LIVE";
+  radioBtn.textContent=isPlaying?"Ⅱ":"▶";
   radioBtn.setAttribute("aria-label",isPlaying?"Pause live audio":"Play live audio");
   studioListenTitle.textContent=isPlaying?"YOU'RE HEARING DAGRINDFM LIVE":"TAP TO HEAR DAGRINDFM LIVE";
   studioListenCopy.textContent=isPlaying?"Live music and shows.":"Tap to listen.";
@@ -282,14 +282,12 @@ function updateStudioListen(isPlaying){
 }
 async function routeAudio(){
   if(cameraLive){
-    liveAudio.pause();
+    liveCamera.muted=true;
+    liveCamera.volume=0;
     if(listenWanted){
-      liveCamera.muted=false;
-      liveCamera.volume=1;
-      try{await liveCamera.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}
+      try{await liveAudio.play();liveCamera.play().catch(()=>{});updateStudioListen(true);}catch(_){updateStudioListen(false);}
     }else{
-      liveCamera.muted=true;
-      liveCamera.volume=0;
+      liveAudio.pause();
       updateStudioListen(false);
     }
     return;
@@ -328,7 +326,8 @@ function startCamera(){
   showReady=false;setCameraMode(true);liveCamera.muted=true;liveCamera.volume=0;
   if(window.Hls&&Hls.isSupported()){
     cameraHls=new Hls({enableWorker:true,lowLatencyMode:true,
-      liveSyncDurationCount:3,liveMaxLatencyDurationCount:7,maxLiveSyncPlaybackRate:1,maxBufferLength:10,backBufferLength:0});
+      liveSyncDurationCount:3,liveMaxLatencyDurationCount:7,
+      maxLiveSyncPlaybackRate:1,maxBufferLength:10,backBufferLength:0});
     cameraHls.loadSource(CONFIG.liveVideoUrl);cameraHls.attachMedia(liveCamera);
     cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{liveCamera.play().catch(()=>{});});
     cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal)stopCamera();});
