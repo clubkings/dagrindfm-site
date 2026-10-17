@@ -328,11 +328,13 @@ function startCamera(){
     cameraHls=new Hls({enableWorker:true,lowLatencyMode:true,
       liveSyncDurationCount:3,liveMaxLatencyDurationCount:7,
       maxLiveSyncPlaybackRate:1,maxBufferLength:10,backBufferLength:0});
-    cameraHls.loadSource(CONFIG.liveVideoUrl);cameraHls.attachMedia(liveCamera);
+    const sessionJoiner=CONFIG.liveVideoUrl.includes("?")?"&":"?";
+    cameraHls.loadSource(CONFIG.liveVideoUrl+sessionJoiner+"play="+Date.now());cameraHls.attachMedia(liveCamera);
     cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{liveCamera.play().catch(()=>{});});
     cameraHls.on(Hls.Events.ERROR,(_,data)=>{if(data.fatal)stopCamera();});
   }else if(liveCamera.canPlayType("application/vnd.apple.mpegurl")){
-    liveCamera.src=CONFIG.liveVideoUrl;liveCamera.play().catch(()=>{});
+    const sessionJoiner=CONFIG.liveVideoUrl.includes("?")?"&":"?";
+    liveCamera.src=CONFIG.liveVideoUrl+sessionJoiner+"play="+Date.now();liveCamera.play().catch(()=>{});
   }else stopCamera();
 }
 
@@ -470,4 +472,3 @@ document.getElementById("refreshTwitch").addEventListener("click", buildTwitchPl
 </script>
 </body>
 </html>
-
