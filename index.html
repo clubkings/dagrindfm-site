@@ -596,13 +596,9 @@ function startCamera(){
   if(cameraLive)return;
   showReady=false;setCameraMode(true);liveCamera.muted=true;liveCamera.volume=0;
   if(window.Hls&&Hls.isSupported()){
-    const mobileLive=window.matchMedia&&matchMedia("(pointer:coarse)").matches;
-    cameraHls=new Hls(mobileLive?{enableWorker:true,lowLatencyMode:true,
+    cameraHls=new Hls({enableWorker:true,lowLatencyMode:false,
       liveSyncDurationCount:4,liveMaxLatencyDurationCount:10,
-      maxLiveSyncPlaybackRate:1.1,maxBufferLength:30,backBufferLength:0}
-     :{enableWorker:true,lowLatencyMode:true,
-      liveSyncDurationCount:2,liveMaxLatencyDurationCount:5,
-      maxLiveSyncPlaybackRate:1.25,maxBufferLength:10,backBufferLength:0});
+      maxLiveSyncPlaybackRate:1,maxBufferLength:18,maxMaxBufferLength:30,backBufferLength:10});
     const sessionJoiner=CONFIG.liveVideoUrl.includes("?")?"&":"?";
     cameraHls.loadSource(CONFIG.liveVideoUrl+sessionJoiner+"play="+Date.now());cameraHls.attachMedia(liveCamera);
     cameraHls.on(Hls.Events.MANIFEST_PARSED,()=>{liveCamera.play().catch(()=>{});});
