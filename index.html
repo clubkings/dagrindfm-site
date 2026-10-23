@@ -628,40 +628,15 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkCamer
 
 // Day-part listener movement: each 10-minute update eases toward the next hour
 // instead of restarting or jumping to a fixed number on every page load.
-const AUDIENCE_BY_DAY={
-  Sun:[14,12,10,9,9,12,20,31,43,51,56,60,58,54,50,55,66,78,92,108,126,142,112,68],
-  Mon:[12,10,9,8,8,11,18,34,52,64,70,72,72,68,62,65,74,88,102,118,136,148,118,62],
-  Tue:[12,10,9,8,8,11,18,34,54,66,74,78,78,72,66,69,80,96,112,132,150,164,128,68],
-  Wed:[12,10,9,8,8,11,20,38,58,70,78,82,82,76,70,74,88,106,126,146,168,182,138,72],
-  Thu:[14,11,10,9,9,13,22,42,64,78,88,92,92,84,78,84,104,128,152,176,198,214,164,86],
-  Fri:[16,13,11,10,10,15,26,48,70,86,96,102,102,94,88,98,124,154,182,208,226,238,204,132],
-  Sat:[22,18,15,13,12,16,24,34,48,62,74,82,86,82,86,102,126,154,182,208,224,232,218,166]
-};
+const AUDIENCE_BY_DAY={Sun:[22,18,16,15,15,18,28,44,62,78,92,104,108,102,96,108,134,168,214,260,306,340,290,164],Mon:[18,16,15,15,15,18,30,52,78,96,112,124,128,120,112,126,156,194,238,282,326,350,286,148],Tue:[18,16,15,15,15,18,32,56,82,102,120,132,136,128,120,136,168,208,254,302,348,372,304,156],Wed:[20,16,15,15,15,20,36,62,90,112,132,146,150,142,134,152,188,232,280,330,378,400,326,168],Thu:[22,18,16,15,15,22,40,70,102,126,148,164,168,160,150,170,210,258,312,360,392,400,342,182],Fri:[26,20,17,16,16,24,46,82,118,144,168,184,190,180,170,194,238,292,348,384,400,400,372,222],Sat:[30,24,19,17,17,24,42,70,98,122,146,164,174,168,174,206,252,310,360,392,400,400,394,274]};
 const TIME_ZONE="America/New_York";
 function audienceClock(now=new Date()){
   const parts=new Intl.DateTimeFormat("en-US",{timeZone:TIME_ZONE,weekday:"short",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(now);
   const read=type=>parts.find(part=>part.type===type)?.value;
   return {day:read("weekday"),hour:Number(read("hour"))%24,minute:Number(read("minute"))};
 }
-function updateListenerCount(){
-  const {day,hour,minute}=audienceClock();
-  const profile=AUDIENCE_BY_DAY[day]||AUDIENCE_BY_DAY.Mon;
-  const current=profile[hour];
-  const next=profile[(hour+1)%24];
-  const tenMinuteSlot=Math.floor(minute/10);
-  const gentleMovement=[0,1,0,-1,0,1][tenMinuteSlot];
-  const listeners=Math.max(8,Math.round(current+(next-current)*(minute/60))+gentleMovement);
-  const peak=Math.max(...profile);
-  listenerCount.textContent=String(listeners);
-  listenerPeak.textContent=String(peak);
-  listenerNote.textContent=minute<10?"NEW HOUR • LIVE LISTENER UPDATE":"UPDATES EVERY 10 MINUTES";
-}
-function scheduleAudienceRefresh(){
-  updateListenerCount();
-  const now=new Date();
-  const nextTenMinutes=(10-(now.getMinutes()%10))*60000-now.getSeconds()*1000-now.getMilliseconds();
-  window.setTimeout(()=>{updateListenerCount();window.setInterval(updateListenerCount,10*60*1000);},Math.max(1000,nextTenMinutes));
-}
+function updateListenerCount(){const {day,hour}=audienceClock();const profile=AUDIENCE_BY_DAY[day]||AUDIENCE_BY_DAY.Mon;const listeners=profile[hour];const peak=Math.max(...profile);listenerCount.textContent=String(listeners);listenerPeak.textContent=String(peak);listenerNote.textContent="HOURLY LISTENER UPDATE";}
+function scheduleAudienceRefresh(){updateListenerCount();const now=new Date();const nextHour=(60-now.getMinutes())*60000-now.getSeconds()*1000-now.getMilliseconds();window.setTimeout(()=>{updateListenerCount();window.setInterval(updateListenerCount,60*60*1000);},Math.max(1000,nextHour));}
 scheduleAudienceRefresh();
 
 </script>
