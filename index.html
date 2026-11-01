@@ -75,6 +75,10 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 .citycam2{position:absolute;inset:0;z-index:2;pointer-events:none}
 .citycam2[hidden]{display:none}
 .citycam2 iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.schedule-visual{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#050505}
+.schedule-visual[hidden]{display:none}
+.schedule-visual img{width:100%;height:100%;display:block;object-fit:contain}
+.station-visual.show-schedule #cameraBadge,.station-visual.show-schedule .wcap2{display:none}
 #liveCamera{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000;z-index:3}
 .station-visual.camera-live #liveCamera{display:block}
 #cameraBadge{position:absolute;top:14px;right:14px;z-index:6;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);border-radius:999px;padding:7px 11px;font-size:10px;font-weight:900;letter-spacing:.08em;color:#fff}
@@ -312,7 +316,8 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 
     <div class="vcard station-visual" aria-label="DaGrindFM live station visual">
       <div class="restlogo2" aria-hidden="true"><img src="assets/dagrindfm-logo.jpg" alt=""></div>
-      <div class="citycam2" id="cityCamLayer" hidden><iframe id="cityCamFrame" title="Live Miami city camera — MacArthur Causeway" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
+      <div class="citycam2" id="cityCamLayer" hidden><iframe id="cityCamFrame" title="Live Miami bay camera — PortMiami and Biscayne Bay" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
+      <div class="schedule-visual" id="scheduleVisual" hidden><img src="assets/tony-tone-noon-mixshow.png" alt="The Grind Mixshow with Tony Tone, Monday through Friday at 12 noon"></div>
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
       <video id="liveCamera" class="live-camera" playsinline muted autoplay aria-label="DaGrindFM live camera"></video>
       <div class="wcap2">
@@ -647,7 +652,7 @@ scheduleAudienceRefresh();
    with a "status=" cache-buster and treats the studio camera as LIVE when the response is OK and the
    body contains "#EXTM3U". It polls politely (every 5s, plus on tab re-focus). Camera LIVE -> city
    layer hidden. Camera OFFLINE -> city layer shown; the iframe src is set only on first show. */
-const CITY_CAM_EMBED_URL = "https://www.youtube.com/embed/GkBMgHwSIV0?autoplay=1&mute=1&playsinline=1";
+const CITY_CAM_EMBED_URL = "https://www.youtube.com/embed/gf1PDT0HQ_M?autoplay=1&mute=1&playsinline=1";
 (function(){
   const layer=document.getElementById("cityCamLayer");
   const frame=document.getElementById("cityCamFrame");
@@ -675,6 +680,29 @@ const CITY_CAM_EMBED_URL = "https://www.youtube.com/embed/GkBMgHwSIV0?autoplay=1
   checkCityCam();
   setInterval(checkCityCam,CHECK_MS);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkCityCam();});
+})();
+</script>
+<script>
+/* Weekday Tony Tone scheduled visual: noon through 12:59 PM Eastern, then the
+   normal fallback camera returns automatically. The live studio camera remains
+   available for audio and resumes visually outside the scheduled slot. */
+(function(){
+  const screen=document.querySelector(".station-visual");
+  const scheduleVisual=document.getElementById("scheduleVisual");
+  if(!screen||!scheduleVisual||typeof audienceClock!=="function")return;
+  const WEEKDAYS=new Set(["Mon","Tue","Wed","Thu","Fri"]);
+  function isTonyToneSlot(){
+    const {day,hour}=audienceClock(new Date());
+    return WEEKDAYS.has(day)&&hour===12;
+  }
+  function syncTonyToneVisual(){
+    const active=isTonyToneSlot();
+    scheduleVisual.hidden=!active;
+    screen.classList.toggle("show-schedule",active);
+  }
+  syncTonyToneVisual();
+  setInterval(syncTonyToneVisual,15000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncTonyToneVisual();});
 })();
 </script>
 <script>
