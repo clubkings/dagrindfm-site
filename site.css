@@ -96,7 +96,7 @@ main{max-width:1380px;margin:auto;padding:34px 24px 92px}
  header{padding:8px 14px;gap:10px}.station-logo{width:46px;height:46px}.brand-copy strong{font-size:18px}.logo .tag{font-size:7px;letter-spacing:.05em}
  .tabs{gap:5px}.tab{min-width:75px;min-height:37px;font-size:9px;letter-spacing:.03em;padding:0 8px}
  main{padding:15px 14px 48px}
- .hero-intro{padding:20px 0 26px;margin-bottom:17px}.hero-intro h1{font-size:clamp(54px,12.5vw,74px);line-height:.84;margin:13px 0}.hero-intro p{font-size:14px}
+.hero-intro{display:none}
  .hero-meta{margin-top:18px;gap:6px}.hero-meta span{font-size:8px;padding:8px 9px}
  #radio>.card{border-radius:21px;padding:16px}
  #radio .station-title{font-size:57px}
