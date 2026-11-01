@@ -609,6 +609,7 @@ window.addEventListener("resize",resizeEqualizer);
 resizeEqualizer();
 startEqualizer(null);
 
+liveAudio.crossOrigin="anonymous";
 liveAudio.src=CONFIG.radioStreamUrl;
 let listenWanted=false, showReady=false;
 liveCamera.defaultMuted=true;
@@ -623,19 +624,8 @@ function updateStudioListen(isPlaying){
   radioStatus.textContent=isPlaying?"DaGrindFM is playing live.":"Tap play to listen live.";
 }
 async function routeAudio(){
-  if(cameraLive){
-    if(listenWanted){
-      liveAudio.pause();
-      liveCamera.muted=false;
-      liveCamera.volume=1;
-      try{await liveCamera.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}
-    }else{
-      if(!liveCamera.muted)liveCamera.pause();
-      liveAudio.pause();
-      updateStudioListen(false);
-    }
-    return;
-  }
+  /* The city camera is visual-only. Keep its audio muted and always use the
+     radio stream so Listen Live works consistently on desktop and phone. */
   liveCamera.muted=true;
   liveCamera.volume=0;
   if(listenWanted){try{await liveAudio.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}}
@@ -649,7 +639,6 @@ liveAudio.addEventListener("error",()=>updateStudioListen(false));
 radioBtn.addEventListener("click",()=>{listenWanted=!listenWanted;void routeAudio();});
 liveCamera.addEventListener("playing",()=>{
   if(!cameraLive)return;
-  startEqualizer(liveCamera);
   if(!showReady){showReady=true;void routeAudio();}
 });
 function setCameraMode(active){
