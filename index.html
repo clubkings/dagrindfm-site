@@ -641,24 +641,52 @@ function updateStudioListen(isPlaying){
   studioListenCopy.textContent=isPlaying?"Live music and shows.":"Tap to listen.";
   radioStatus.textContent=isPlaying?"DaGrindFM is playing live.":"Tap play to listen live.";
 }
+let audioRoute = 0;
+let radioNeedsRefresh = false;
 async function routeAudio(){
-  /* The city camera is visual-only. Keep its audio muted and always use the
-     radio stream so Listen Live works consistently on desktop and phone. */
-  liveCamera.muted=true;
-  liveCamera.volume=0;
-  if(listenWanted){try{await liveAudio.play();updateStudioListen(true);}catch(_){updateStudioListen(false);}}
-  else{liveAudio.pause();updateStudioListen(false);}
+  const request = ++audioRoute;
+  const useStudio = listenWanted && cameraLive && showReady;
+  liveCamera.muted = !useStudio;
+  liveCamera.volume = useStudio ? 1 : 0;
+  if (!listenWanted) {
+    liveAudio.pause();
+    radioNeedsRefresh = true;
+    updateStudioListen(false);
+    return;
+  }
+  try {
+    if (useStudio) {
+      liveAudio.pause();
+      radioNeedsRefresh = true;
+      await liveCamera.play();
+    } else {
+      if (radioNeedsRefresh) {
+        liveAudio.load();
+        radioNeedsRefresh = false;
+      }
+      await liveAudio.play();
+    }
+    if (request === audioRoute) updateStudioListen(true);
+  } catch (_) {
+    if (request !== audioRoute) return;
+    listenWanted = false;
+    liveCamera.muted = true;
+    updateStudioListen(false);
+  }
 }
-liveAudio.addEventListener("playing",()=>{
-  updateStudioListen(listenWanted);
-  startEqualizer(liveAudio);
+liveAudio.addEventListener('playing',()=>startEqualizer(liveAudio));
+radioBtn.addEventListener('click',()=>{listenWanted=!listenWanted;void routeAudio();});
+liveCamera.addEventListener('playing',()=>{
+  if(cameraLive && !showReady){showReady=true;void routeAudio();}
 });
-liveAudio.addEventListener("error",()=>updateStudioListen(false));
-radioBtn.addEventListener("click",()=>{listenWanted=!listenWanted;void routeAudio();});
-liveCamera.addEventListener("playing",()=>{
-  if(!cameraLive)return;
-  if(!showReady){showReady=true;void routeAudio();}
-});
+function studioInterrupted(){
+  if(!cameraLive || !showReady)return;
+  showReady=false;
+  void routeAudio();
+}
+liveCamera.addEventListener('waiting',studioInterrupted);
+liveCamera.addEventListener('ended',()=>{if(cameraLive)stopCamera();});
+liveCamera.addEventListener('error',()=>{if(cameraLive)stopCamera();});
 function setCameraMode(active){
   cameraLive=active;
   stationVisual.classList.toggle("camera-live",active);
