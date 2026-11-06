@@ -325,9 +325,9 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
       </div>
       <audio id="liveAudio" preload="none"></audio>
     </div>
-
+      </div>
     <div class="vcard station-visual" aria-label="DaGrindFM live station visual">
-      <div class="restlogo2" aria-hidden="true"><img src="assets/dagrindfm-logo.jpg" alt=""></div>
+      <div class="restlogo2" aria-hidden="true"><img src="assets/dagrindfm-static-logo.png" alt=""></div>
       <div class="citycam2" id="cityCamLayer" hidden><iframe id="cityCamFrame" title="Live Miami bay camera — PortMiami and Biscayne Bay" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
       <div class="schedule-visual" id="scheduleVisual" hidden><img src="assets/tony-tone-noon-mixshow.png" alt="The Grind Mixshow with Tony Tone, Monday through Friday at 12 noon"></div>
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
@@ -729,7 +729,7 @@ scheduleAudienceRefresh();
    with a "status=" cache-buster and treats the studio camera as LIVE when the response is OK and the
    body contains "#EXTM3U". It polls politely (every 5s, plus on tab re-focus). Camera LIVE -> city
    layer hidden. Camera OFFLINE -> city layer shown; the iframe src is set only on first show. */
-const CITY_CAM_EMBED_URL = "https://www.youtube.com/embed/gf1PDT0HQ_M?autoplay=1&mute=1&playsinline=1";
+const CITY_CAM_EMBED_URL = "";
 (function(){
   const layer=document.getElementById("cityCamLayer");
   const frame=document.getElementById("cityCamFrame");
