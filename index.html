@@ -619,7 +619,7 @@ startEqualizer(null);
 liveAudio.crossOrigin="anonymous";
 liveAudio.src=CONFIG.radioStreamUrl;
 let listenWanted=false, showReady=false;
-liveCamera.defaultMuted=true;
+liveCamera.crossOrigin="use-credentials";liveCamera.defaultMuted=true;
 liveCamera.muted=true;
 liveCamera.volume=0;
 function updateStudioListen(isPlaying){
@@ -689,7 +689,7 @@ function startCamera(){
   if(cameraLive)return;
   showReady=false;setCameraMode(true);liveCamera.muted=true;liveCamera.volume=0;
   if(window.Hls&&Hls.isSupported()){
-    cameraHls=new Hls({enableWorker:true,lowLatencyMode:true,
+    cameraHls=new Hls({enableWorker:true,xhrSetup:(xhr)=>{xhr.withCredentials=true;},lowLatencyMode:true,
       liveSyncDurationCount:3,liveMaxLatencyDurationCount:6,
       maxLiveSyncPlaybackRate:1,maxBufferLength:12,maxMaxBufferLength:18,backBufferLength:6});
     const sessionJoiner=CONFIG.liveVideoUrl.includes("?")?"&":"?";
