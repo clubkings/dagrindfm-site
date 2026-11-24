@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>DaGrindFM — Miami's Independent Sound</title>
-<meta name="description" content="Listen live to DaGrindFM, watch the studio when the camera is on, and discover the people and partners behind Miami's independent sound.">
+<title>DaGrindFM.com — Streaming Worldwide</title>
+<meta name="description" content="Stream DaGrindFM worldwide for hip-hop, R&B, throwbacks, community voices, live radio and studio video.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='25' font-weight='900' fill='%23f5a000' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="site.css?v=live-20261015">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,8 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 .mlogo small{display:block;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:3px;color:var(--vmut);font-weight:700;margin-top:5px}
 .mlogo-img{height:48px;width:48px;object-fit:contain;display:block;flex:0 0 auto}
 .mlogo .mlogo-txt{color:#fff}
+.mlogo .mlogo-txt{font-size:27px;letter-spacing:1px}
+.mlogo .mlogo-txt small{font-size:9px;letter-spacing:2px}
 .mtabs{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .mtabs .tab{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:#d7d7db;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;min-height:44px;padding:10px 12px;border-radius:999px;cursor:pointer}
 .mtabs .tab.active{color:var(--vorg);background:rgba(255,122,0,.12)}
@@ -54,6 +56,17 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 .stat2 b{font-family:'Anton','Arial Narrow',Arial,sans-serif;font-size:29px;color:var(--vorg);display:block;font-weight:400}
 .stat2>span{font-size:10px;letter-spacing:2px;color:var(--vmut);font-weight:700}
 #listenerNote{font-size:11px;color:var(--vmut);letter-spacing:1px;font-weight:700;margin-top:10px}
+#worldwideMap{display:grid;grid-template-columns:minmax(92px,128px) 1fr;align-items:center;gap:10px;margin-top:12px;padding:9px 11px;border:1px solid #303239;border-radius:12px;background:#101318}
+.world-map{display:block;width:100%;height:auto;border-radius:6px;background:#151b24}
+.world-map .land{fill:#202b2b;stroke:#43504e;stroke-width:1.1;stroke-linejoin:round}
+.world-map .border{fill:none;stroke:#45514f;stroke-width:.75;opacity:.8}
+.world-map .city-dot{fill:#ff9b31;stroke:#ffe0ad;stroke-width:1.2}
+.world-map .spotlight-pin{fill:#55c8e3;stroke:#daf7ff;stroke-width:1.5}
+.world-map-copy{min-width:0}
+.world-map-kicker{display:block;color:#d8e2e8;font-size:8px;font-weight:900;letter-spacing:.13em}
+.world-map-city{display:block;margin-top:3px;color:#59c8e2;font-size:13px;font-weight:900;line-height:1.1}
+.world-map-cities{margin-top:4px;color:#c5c9cf;font-size:8px;line-height:1.45}
+.world-map-note{display:block;margin-top:3px;color:#878d96;font-size:7px;line-height:1.35}
 #eq{display:block;width:100%;height:56px;margin-top:18px;opacity:.95}
 .playrow{display:flex;align-items:center;gap:16px;margin-top:22px}
 #radio #radioPlay{width:72px;height:72px;flex:0 0 auto;border-radius:50%;border:0;background:var(--vorg);color:#111;font-size:27px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
@@ -69,6 +82,8 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 .station-visual{position:relative;min-height:392px;background:#000}
 .restlogo2{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(620px 340px at 50% 42%,rgba(255,122,0,.15),transparent 70%)}
 .restlogo2 img{width:min(56%,290px);max-height:74%;height:auto;object-fit:contain;display:block}
+.restlogo-mark{display:flex;flex-direction:column;align-items:center;color:#ff7a00;font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-size:clamp(44px,8vw,82px);font-style:italic;font-weight:900;letter-spacing:-.035em;line-height:.8;text-shadow:0 0 28px rgba(255,122,0,.34)}
+.restlogo-mark small{margin-top:10px;color:#f7f4ee;font-family:'DM Sans',Arial,sans-serif;font-size:.24em;font-style:normal;font-weight:800;letter-spacing:.28em}
 .citycam2{position:absolute;inset:0;z-index:2;pointer-events:none}
 .citycam2[hidden]{display:none}
 .citycam2 iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
@@ -225,6 +240,11 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
   .player2 .stat2 b{font-size:24px}
   .player2 .stat2>span{font-size:8px;letter-spacing:1px}
   .player2 #listenerNote{font-size:9px;margin-top:8px}
+  #worldwideMap{grid-template-columns:100px 1fr;gap:8px;margin-top:8px;padding:7px 8px}
+  .world-map-kicker{font-size:7.5px}
+  .world-map-city{font-size:12px}
+  .world-map-cities{font-size:8.5px;line-height:1.35}
+  .world-map-note{font-size:7px}
   .player2 #eq{height:28px;margin-top:8px}
   .player2 .playrow{gap:10px;margin-top:10px;flex-wrap:nowrap}
   .player2 #radioPlay{width:54px;height:54px;font-size:22px}
@@ -271,7 +291,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 @media (max-width:720px){.shop2{grid-template-columns:1fr}}
 </style>
 <header class="mhead">
-  <a class="mlogo" href="#top"><img class="mlogo-img" src="assets/dagrindfm-logo.jpg" alt="Da Grind FM logo"><span class="mlogo-txt">DA GRIND <span>FM</span><small>100.3 WQNB • MIAMI GARDENS</small></span></a>
+  <a class="mlogo" href="#top" aria-label="DaGrindFM.com — streaming worldwide"><span class="mlogo-txt">DAGRINDFM<span>.COM</span><small>STREAMING WORLDWIDE</small></span></a>
   <nav class="mtabs" aria-label="Station sections">
     <button class="tab active" data-panel="radio">RADIO</button>
     <button class="tab" data-panel="watch">WATCH</button>
@@ -307,6 +327,50 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
         <div class="stat2"><b>24/7</b><span>ON AIR</span></div>
       </div>
       <div id="listenerNote" aria-live="polite">TUNED IN TO DA GRIND FM</div>
+      <section id="worldwideMap" aria-label="Worldwide community city spotlight">
+        <svg class="world-map" viewBox="0 0 720 230" role="img" aria-labelledby="worldMapTitle worldMapDesc">
+          <title id="worldMapTitle">Featured DaGrindFM community cities</title>
+          <desc id="worldMapDesc">Decorative map showing the locations of 15 featured community cities. The city spotlight changes hourly.</desc>
+          <rect width="720" height="230" fill="#151b24"/>
+          <g class="land">
+            <path d="M49 49 68 36 91 32 104 22 124 27 137 38 159 41 175 52 196 53 210 65 202 78 188 82 184 96 173 103 166 117 155 114 146 99 134 93 125 83 107 81 98 72 82 72 69 63 53 64Z"/>
+            <path d="M164 108 177 115 184 128 193 134 190 143 183 138 178 127 168 120Z"/>
+            <path d="M191 132 205 128 220 136 230 151 228 168 219 184 215 201 204 216 195 205 197 189 189 173 184 157Z"/>
+            <path d="m194 22 13-8 17 2 11 8-4 10-15 3-14-5Z"/>
+            <path d="M314 54 326 44 340 43 346 50 338 56 327 58Z"/>
+            <path d="M339 48 355 36 378 34 392 28 416 33 432 27 453 33 470 29 491 37 515 36 535 44 563 43 587 53 611 55 630 69 622 79 600 77 585 86 567 82 553 93 538 91 525 101 507 96 493 89 478 93 464 82 448 78 435 67 419 66 405 58 388 61 372 55 356 61Z"/>
+            <path d="M346 75 361 69 378 75 385 88 395 96 391 111 384 125 378 143 369 160 361 154 357 137 350 123 347 106 339 93Z"/>
+            <path d="M393 89 407 86 418 94 426 107 438 111 444 125 438 136 428 129 421 115 411 108 402 99Z"/>
+            <path d="M510 122 527 117 542 124 548 137 542 145 525 141 516 133Z"/>
+            <path d="M577 156 596 151 614 157 627 169 623 182 608 187 591 182 581 173Z"/>
+          </g>
+          <g class="border">
+            <path d="m94 34 8 15-6 17m18-37 3 19-10 18m25-24-6 22m19-15-8 18m20-14-9 19m22-6-14 15m-58 7 22 2 13 13m2-1 20-5m3 12 17-7m9-17 9-4"/>
+            <path d="m327 47 8 10m13-11 5 15m16-23 1 16m18-18 4 24m21-22 4 20m19-21 3 18m21-17 3 21m20-13-2 21m20-14-3 19m23-19-5 22m24-14-8 17m31-18-10 19m-73-34 13 5 10 14m-30-6-4 17m33-5 4 16m-36-9-6 14m24-48 8 14m-9 28-12 6-9 20m-24-54 8 16"/>
+            <path d="m198 138 13 10-4 16m4-26 8 19m-10 28 13-6"/>
+          </g>
+          <g aria-hidden="true">
+            <circle class="city-dot" cx="208" cy="87" r="3.2"/><circle class="city-dot" cx="220" cy="72" r="3.2"/>
+            <circle class="city-dot" cx="201" cy="80" r="3.2"/><circle class="city-dot" cx="137" cy="79" r="3.2"/>
+            <circle class="city-dot" cx="195" cy="71" r="3.2"/><circle class="city-dot" cx="180" cy="89" r="3.2"/>
+            <circle class="city-dot" cx="203" cy="70" r="3.2"/><circle class="city-dot" cx="218" cy="72" r="3.2"/>
+            <circle class="city-dot" cx="360" cy="61" r="3.2"/><circle class="city-dot" cx="211" cy="69" r="3.2"/>
+            <circle class="city-dot" cx="215" cy="101" r="3.2"/><circle class="city-dot" cx="366" cy="108" r="3.2"/>
+            <circle class="city-dot" cx="413" cy="142" r="3.2"/><circle class="city-dot" cx="364" cy="63" r="3.2"/>
+            <circle class="city-dot" cx="272" cy="140" r="3.2"/>
+          </g>
+          <g id="worldMapSpotlightPin" transform="translate(208 87)" aria-hidden="true">
+            <path class="spotlight-pin" d="M0 0C-3-5-12-14-12-22a12 12 0 1 1 24 0C12-14 3-5 0 0Z"/>
+            <circle cx="0" cy="-22" r="4" fill="#fff"/>
+          </g>
+        </svg>
+        <div class="world-map-copy">
+          <span class="world-map-kicker">CITY SPOTLIGHT • CHANGES HOURLY</span>
+          <strong class="world-map-city" id="worldMapSpotlightCity" aria-live="polite">Miami</strong>
+          <div class="world-map-cities">Miami · New York · Atlanta · Los Angeles · Chicago · Houston · Detroit · Philadelphia · London · Toronto · Kingston · Lagos · Johannesburg · Paris · São Paulo</div>
+          <small class="world-map-note">Featured community cities • map does not show live listener locations</small>
+        </div>
+      </section>
       <canvas id="eq" aria-hidden="true"></canvas>
       <div class="playrow">
         <button id="radioPlay" class="play" aria-label="Play live radio">▶</button>
@@ -325,7 +389,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
     </div>
       </div>
     <div class="vcard station-visual" aria-label="DaGrindFM live station visual">
-      <div class="restlogo2" aria-hidden="true"><img src="assets/dagrindfm-static-logo.png" alt=""></div>
+      <div class="restlogo2" aria-hidden="true"><div class="restlogo-mark">Da Grind<small>FM</small></div></div>
       <div class="citycam2" id="cityCamLayer" hidden><iframe id="cityCamFrame" title="Live Miami bay camera — PortMiami and Biscayne Bay" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
       <div class="schedule-visual" id="scheduleVisual" hidden><img src="assets/tony-tone-noon-mixshow.png" alt="The Grind Mixshow with Tony Tone, Monday through Friday at 12 noon"></div>
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
@@ -731,6 +795,35 @@ function audienceClock(now=new Date()){
 function updateListenerCount(){const {day,hour}=audienceClock();const profile=AUDIENCE_BY_DAY[day]||AUDIENCE_BY_DAY.Mon;const listeners=profile[hour];const peak=Math.max(...profile);listenerCount.textContent=String(listeners);listenerPeak.textContent=String(peak);listenerNote.textContent="HOURLY LISTENER UPDATE";}
 function scheduleAudienceRefresh(){updateListenerCount();const now=new Date();const nextHour=(60-now.getMinutes())*60000-now.getSeconds()*1000-now.getMilliseconds();window.setTimeout(()=>{updateListenerCount();window.setInterval(updateListenerCount,60*60*1000);},Math.max(1000,nextHour));}
 scheduleAudienceRefresh();
+
+/* Hourly community-city spotlight: decorative presentation only.
+   The listener counters and their existing schedule above remain unchanged. */
+(()=>{
+  const cities=[
+    {name:"Miami",x:208,y:87},{name:"New York",x:220,y:72},
+    {name:"Atlanta",x:201,y:80},{name:"Los Angeles",x:137,y:79},
+    {name:"Chicago",x:195,y:71},{name:"Houston",x:180,y:89},
+    {name:"Detroit",x:203,y:70},{name:"Philadelphia",x:218,y:72},
+    {name:"London",x:360,y:61},{name:"Toronto",x:211,y:69},
+    {name:"Kingston",x:215,y:101},{name:"Lagos",x:366,y:108},
+    {name:"Johannesburg",x:413,y:142},{name:"Paris",x:364,y:63},
+    {name:"São Paulo",x:272,y:140}
+  ];
+  const name=document.getElementById("worldMapSpotlightCity");
+  const pin=document.getElementById("worldMapSpotlightPin");
+  const description=document.getElementById("worldMapDesc");
+  if(!name||!pin)return;
+  function updateCitySpotlight(){
+    const {hour}=audienceClock();
+    const city=cities[hour%cities.length];
+    name.textContent=city.name;
+    pin.setAttribute("transform","translate("+city.x+" "+city.y+")");
+    if(description)description.textContent="Decorative map of featured community cities. Hourly spotlight: "+city.name+"; not a live listener location.";
+  }
+  updateCitySpotlight();
+  window.setInterval(updateCitySpotlight,60000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)updateCitySpotlight();});
+})();
 
 </script>
 <script>
