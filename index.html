@@ -50,6 +50,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
 .player2{padding:28px}
 .plabel{color:var(--vred);font-weight:700;letter-spacing:3px;font-size:13px}
 .ptitle{font-family:'Anton','Arial Narrow',Arial,sans-serif;font-size:40px;margin-top:10px;letter-spacing:1px;color:#fff;font-weight:400}
+.player-brand-logo{display:block;width:88px;height:88px;object-fit:contain;margin:6px 0 2px;border-radius:10px}
 .pmeta{color:var(--vmut);font-weight:700;letter-spacing:2px;font-size:12px;margin-top:4px}
 .stats2{display:flex;gap:10px;margin-top:22px;border-top:1px solid var(--vline);border-bottom:1px solid var(--vline);padding:14px 0}
 .stat2{flex:1;min-width:0}
@@ -235,6 +236,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
   .player2{padding:14px 16px;border-radius:16px}
   .player2 .plabel{font-size:10px;letter-spacing:2px}
   .player2 .ptitle{font-size:32px;margin-top:5px}
+  .player2 .player-brand-logo{width:68px;height:68px;margin:3px 0 1px}
   .player2 .pmeta{font-size:10px;margin-top:2px}
   .player2 .stats2{margin-top:9px;padding:9px 0;gap:5px}
   .player2 .stat2 b{font-size:24px}
@@ -319,7 +321,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
   <div class="grid2">
     <div class="vcard player2">
       <div class="plabel">● LIVE RADIO</div>
-      <h2 class="ptitle">DA GRIND FM</h2>
+      <img class="player-brand-logo" src="assets/dagrindfm-worldwide-logo.png" alt="Da Grind FM Worldwide logo">
       <div class="pmeta">100.3 FM • WQNB • MIAMI GARDENS</div>
       <div class="stats2">
         <div class="stat2"><b><span id="listenerCount">75</span></b><span>LISTENING NOW</span></div>
@@ -389,7 +391,7 @@ body{display:block;margin:0;background:var(--vbg);color:var(--vtxt);font-family:
     </div>
       </div>
     <div class="vcard station-visual" aria-label="DaGrindFM live station visual">
-      <div class="restlogo2" aria-hidden="true"><div class="restlogo-mark">Da Grind<small>FM</small></div></div>
+      <div class="restlogo2" aria-hidden="true"><img src="assets/dagrindfm-worldwide-logo.png" alt=""></div>
       <div class="citycam2" id="cityCamLayer" hidden><iframe id="cityCamFrame" title="Live Miami bay camera — PortMiami and Biscayne Bay" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
       <div class="schedule-visual" id="scheduleVisual" hidden><img src="assets/tony-tone-noon-mixshow.png" alt="The Grind Mixshow with Tony Tone, Monday through Friday at 12 noon"></div>
       <div id="cameraBadge" class="visual-cam-note">CAMERA READY</div>
